@@ -111,7 +111,8 @@ def train_with_early_stopping(model, optimizer, loss_fn, train_dl, val_dl,
             for xb, yb, _ in val_dl:
                 preds = model(xb.float()).numpy().flatten()
                 y_true = np.exp(yb.numpy().flatten())
-                y_pred = np.exp(preds)
+#                y_pred = np.exp(preds)
+                y_pred = np.exp(np.clip(preds, -20, 20))  # clip 추가
                 total_val += mean_squared_error(y_true, y_pred) * len(xb)
                 n_samples += len(xb)
 
